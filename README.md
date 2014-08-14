@@ -45,7 +45,7 @@ func main() {
 
 	//create a post
 	var post1 Post
-	err = rest.Get("posts").
+	err = rest.Get("createpost").
 		SetBody("userId", 1, "title", "test", "body", "test").
 		Exec(&post1)
 
