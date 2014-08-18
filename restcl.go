@@ -11,7 +11,7 @@ type Rest struct {
 }
 
 type Intercept interface {
-	Modify(req *http.Request) *http.Request
+	Modify(req *http.Request)
 }
 
 //creates a new rest object

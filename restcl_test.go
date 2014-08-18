@@ -7,8 +7,7 @@ import (
 
 type Auth struct{}
 
-func (a Auth) Modify(req *http.Request) *http.Request {
-	return req
+func (a Auth) Modify(req *http.Request) {
 }
 
 func Test_RestClient(t *testing.T) {

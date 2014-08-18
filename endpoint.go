@@ -16,7 +16,6 @@ type RestEndPoint struct {
 	Params      map[string]string
 	Body        []interface{}
 	interceptor []Intercept
-	do          func(re RestEndPoint, a interface{}) error
 }
 
 //sets the parameters used to build the url

@@ -72,15 +72,13 @@ import (
 )
 
 type Auth struct{}
-func (a Auth) Modify(req *http.Request) *http.Request {
+func (a Auth) Modify(req *http.Request) {
 	//do something with the request
-	return req
 }
 
 type Log struct{}
-func (l Log) Modify(req *http.Request) *http.Request {
+func (l Log) Modify(req *http.Request) {
 	//log the request
-	return req
 }
 
 func main() {
