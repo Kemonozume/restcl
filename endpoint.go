@@ -6,6 +6,9 @@ import (
 	"strings"
 
 	"github.com/Kemonozume/httpcl"
+	"net/http"
+	"io/ioutil"
+	"encoding/json"
 )
 
 //used to query the rest service
@@ -30,8 +33,10 @@ func (rep *RestEndPoint) SetBody(b ...interface{}) *RestEndPoint {
 	return rep
 }
 
+
+
 //executes the request and transforms the response into a json interface
-func (rep *RestEndPoint) Exec(a interface{}) error {
+func (rep *RestEndPoint) Exec(a interface{}) (*http.Response, error) {
 	rep.buildUrl()
 	cl := &httpcl.ClientBuilder{}
 	cl.Method = rep.Method
@@ -40,14 +45,27 @@ func (rep *RestEndPoint) Exec(a interface{}) error {
 	cl.Body = rep.Body
 	c := cl.Build()
 	if c.Error != nil {
-		return c.Error
+		return nil, c.Error
 	}
 	if len(rep.interceptor) > 0 {
 		for _, inter := range rep.interceptor {
-			inter.Modify(c.GetRequest())
+			inter(c.GetRequest())
 		}
 	}
-	return c.DoTransform(httpcl.TransformToJson, a)
+	return c.DoTransform(TransformToJson, a)
+}
+
+func TransformToJson(resp *http.Response, c interface{}) (err error) {
+	if c == nil {
+		return
+	}
+	defer resp.Body.Close()
+	by, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	err = json.Unmarshal(by, c)
+	return
 }
 
 //builds the url

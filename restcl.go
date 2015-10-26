@@ -10,9 +10,8 @@ type Rest struct {
 	tmp         RestEndPoint
 }
 
-type Intercept interface {
-	Modify(req *http.Request)
-}
+type Intercept func (req *http.Request)
+
 
 //creates a new rest object
 func NewRest() *Rest {
@@ -51,7 +50,6 @@ func (r *Rest) Create(url string) *Rest {
 				r.tmp.interceptor = append(r.tmp.interceptor, inte)
 			}
 		}
-
 	}
 	return r
 }
